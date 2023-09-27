@@ -1,6 +1,7 @@
 import { BotHandlerContext, User, states } from "./states.js";
 import {
   renderAmizoneMenu,
+  renderTodaySchedule,
   renderAttendance,
   renderCourses,
   renderSchedule,
@@ -80,6 +81,7 @@ export const handleExpectPassword = async (
     updatedUser.amizoneCredentials.password = password;
     updatedUser.state = states.LOGGED_IN;
     await ctx.bot.sendInteractiveMessage(payload.sender, renderAmizoneMenu());
+    await ctx.bot.sendInteractiveMessage(payload.sender, renderTodaySchedule());
     return updatedUser;
   }
   await ctx.bot.sendMessage(
@@ -202,6 +204,8 @@ export const handleLoggedIn = async (ctx: BotHandlerContext): Promise<User> => {
       "Invalid option selected. Try again?"
     );
     await ctx.bot.sendInteractiveMessage(payload.sender, renderAmizoneMenu());
+    await ctx.bot.sendInteractiveMessage(payload.sender, renderTodaySchedule());
+
     return updatedUser;
   }
 
@@ -212,12 +216,16 @@ export const handleLoggedIn = async (ctx: BotHandlerContext): Promise<User> => {
       "Unsuccessful. Either Amizone is down or you need to login again (hint: menu has a _logout_ option)"
     );
     await ctx.bot.sendInteractiveMessage(payload.sender, renderAmizoneMenu());
+    await ctx.bot.sendInteractiveMessage(payload.sender, renderTodaySchedule());
+
     return updatedUser;
   }
 
   if (typeof message === "string") {
     await ctx.bot.sendMessage(payload.sender, message);
     await ctx.bot.sendInteractiveMessage(payload.sender, renderAmizoneMenu());
+    await ctx.bot.sendInteractiveMessage(payload.sender, renderTodaySchedule());
+
   }
 
   if (typeof message === "object" && message !== null) {
@@ -277,6 +285,12 @@ export const handleScheduleDateInput = async (ctx: BotHandlerContext) => {
       whatsappPayload.sender,
       renderAmizoneMenu()
     );
+    
+    await ctx.bot.sendInteractiveMessage(
+      whatsappPayload.sender,
+      renderTodaySchedule()
+    );
+
     updatedUser.state = states.LOGGED_IN;
   } catch (err) {
     // ? catch invalid credential
@@ -298,6 +312,10 @@ export const handleFacultyFeedbackRating = async (ctx: BotHandlerContext) => {
     await ctx.bot.sendInteractiveMessage(
       whatsappPayload.sender,
       renderAmizoneMenu()
+    );
+    await ctx.bot.sendInteractiveMessage(
+        whatsappPayload.sender,
+        renderTodaySchedule()
     );
     updatedUser.state = states.LOGGED_IN;
     return updatedUser;
@@ -349,6 +367,10 @@ export const handleFacultyFeedbackRating = async (ctx: BotHandlerContext) => {
         whatsappPayload.sender,
         renderAmizoneMenu()
       );
+      await ctx.bot.sendInteractiveMessage(
+        whatsappPayload.sender,
+        renderTodaySchedule()
+      );
       updatedUser.state = states.LOGGED_IN;
       return updatedUser;
     }
@@ -361,6 +383,11 @@ export const handleFacultyFeedbackRating = async (ctx: BotHandlerContext) => {
       whatsappPayload.sender,
       renderAmizoneMenu()
     );
+    await ctx.bot.sendInteractiveMessage(
+        whatsappPayload.sender,
+        renderTodaySchedule()
+    );
+    
     updatedUser.state = states.LOGGED_IN;
   } catch (err) {
     // ? catch invalid credential

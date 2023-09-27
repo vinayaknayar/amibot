@@ -198,6 +198,40 @@ export const renderAmizoneMenu = () => ({
   },
 });
 
+export const renderTodaySchedule = () => ({
+  type: "list",
+  header: {
+    type: "text",
+    text: "Today's Schedule",
+  },
+  body: {
+    text: "Select an Option",
+  },
+  action: {
+    button: "Options",
+    sections: [
+      {
+        title: "Options",
+        rows: [
+          {
+            id: "1",
+            title: "Today",
+          },
+          {
+            id: "2",
+            title: "Tomorrow",
+          },
+          {
+            id: "3",
+            title: "Day After Tomorrow",
+          },
+        ],
+      },
+    ],
+  },
+  
+});
+
 export const renderClassScheduleDateList = () => {
   const dates = new Array(5);
   for (let i = 0; i < 5; i += 1) {
